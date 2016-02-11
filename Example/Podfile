@@ -1,0 +1,12 @@
+source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+
+target 'IOS-Geolive-Map_Example', :exclusive => true do
+  pod 'IOS-Geolive-Map', :path => '../'
+end
+
+target 'IOS-Geolive-Map_Tests', :exclusive => true do
+  pod 'IOS-Geolive-Map', :path => '../'
+
+  
+end
