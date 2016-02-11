@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = "IOS-Geolive-Map"
   s.version          = "0.1.0"
-  s.summary          = "A short description of IOS-Geolive-Map."
+  s.summary          = "An IOS Mapping Application"
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,22 +17,27 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!  
   s.description      = <<-DESC
+	
+	provides a configurable mapping application
+	
                        DESC
 
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/IOS-Geolive-Map"
+  s.homepage         = "https://github.com/nickolanack/IOS-Geolive-Map"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "nickolanack" => "nickblackwell82@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/IOS-Geolive-Map.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/nickolanack/IOS-Geolive-Map.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '9.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
   s.resource_bundles = {
-    'IOS-Geolive-Map' => ['Pod/Assets/*.png']
+    'IOS-Geolive-Map' => ['Pod/Assets/*.xcf']
   }
+
+  s.resources = ["*.storyboard", "Pod/Assets/*.png"]
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'

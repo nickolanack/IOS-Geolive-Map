@@ -1,0 +1,14 @@
+PODS:
+  - IOS-Geolive-Map (0.1.0)
+
+DEPENDENCIES:
+  - IOS-Geolive-Map (from `../`)
+
+EXTERNAL SOURCES:
+  IOS-Geolive-Map:
+    :path: ../
+
+SPEC CHECKSUMS:
+  IOS-Geolive-Map: ed763f5695144b9cc0817f45af1bfb57cc8a79d5
+
+COCOAPODS: 0.39.0
