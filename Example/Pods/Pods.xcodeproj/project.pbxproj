@@ -16,13 +16,22 @@
 		5BC11A38D59CF12F1A5F6C6375476702 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
 		9082647A1C6D2378009053AC /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = 908264791C6D2378009053AC /* Assets */; };
 		9082648A1C6D248B009053AC /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 908264891C6D248B009053AC /* Menu.storyboard */; };
-		908264921C6D24D1009053AC /* MenuViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 9082648B1C6D24D1009053AC /* MenuViewController.h */; };
-		908264931C6D24D1009053AC /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9082648C1C6D24D1009053AC /* MenuViewController.m */; };
-		908264941C6D24D1009053AC /* StyleProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9082648D1C6D24D1009053AC /* StyleProvider.h */; };
-		908264951C6D24D1009053AC /* FeatureViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 9082648E1C6D24D1009053AC /* FeatureViewController.h */; };
-		908264961C6D24D1009053AC /* FeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9082648F1C6D24D1009053AC /* FeatureViewController.m */; };
-		908264971C6D24D1009053AC /* FeatureDetailViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 908264901C6D24D1009053AC /* FeatureDetailViewController.h */; };
-		908264981C6D24D1009053AC /* FeatureDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 908264911C6D24D1009053AC /* FeatureDetailViewController.m */; };
+		908264A01C6D27D3009053AC /* MenuViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 908264991C6D27D3009053AC /* MenuViewController.h */; };
+		908264A11C6D27D3009053AC /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9082649A1C6D27D3009053AC /* MenuViewController.m */; };
+		908264A21C6D27D3009053AC /* StyleProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9082649B1C6D27D3009053AC /* StyleProvider.h */; };
+		908264A31C6D27D3009053AC /* FeatureViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 9082649C1C6D27D3009053AC /* FeatureViewController.h */; };
+		908264A41C6D27D3009053AC /* FeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9082649D1C6D27D3009053AC /* FeatureViewController.m */; };
+		908264A51C6D27D3009053AC /* FeatureDetailViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 9082649E1C6D27D3009053AC /* FeatureDetailViewController.h */; };
+		908264A61C6D27D3009053AC /* FeatureDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9082649F1C6D27D3009053AC /* FeatureDetailViewController.m */; };
+		908264B01C6D2ADD009053AC /* GFTitleCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 908264A71C6D2ADD009053AC /* GFTitleCell.h */; };
+		908264B11C6D2ADD009053AC /* GFTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 908264A81C6D2ADD009053AC /* GFTitleCell.m */; };
+		908264B21C6D2ADD009053AC /* GFKeywordCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 908264A91C6D2ADD009053AC /* GFKeywordCell.h */; };
+		908264B31C6D2ADD009053AC /* GFKeywordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 908264AA1C6D2ADD009053AC /* GFKeywordCell.m */; };
+		908264B41C6D2ADD009053AC /* GFKeywordEntryCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 908264AB1C6D2ADD009053AC /* GFKeywordEntryCell.h */; };
+		908264B51C6D2ADD009053AC /* GFKeywordEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 908264AC1C6D2ADD009053AC /* GFKeywordEntryCell.m */; };
+		908264B61C6D2ADD009053AC /* GFDelegateCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 908264AD1C6D2ADD009053AC /* GFDelegateCell.h */; };
+		908264B71C6D2ADD009053AC /* FeatureCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 908264AE1C6D2ADD009053AC /* FeatureCell.h */; };
+		908264B81C6D2ADD009053AC /* FeatureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 908264AF1C6D2ADD009053AC /* FeatureCell.m */; };
 		9486762F5C41B36D2B103EFE563F110A /* Pods-IOS-Geolive-Map_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC27BA0E0043184216D19335E3D354E /* Pods-IOS-Geolive-Map_Tests-dummy.m */; };
 		A7A92006E8631F3ADFA259A4E6038381 /* Pods-IOS-Geolive-Map_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2042F2A1F4301A61BC685D70CA99F27B /* Pods-IOS-Geolive-Map_Example-dummy.m */; };
 		E2CD40B316EBB43D33AC62709E188852 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
@@ -71,13 +80,22 @@
 		7EFB2CD8285349AA1E8E00CB82E6B8FB /* IOS-Geolive-Map.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "IOS-Geolive-Map.modulemap"; sourceTree = "<group>"; };
 		908264791C6D2378009053AC /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		908264891C6D248B009053AC /* Menu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Menu.storyboard; path = ../Menu.storyboard; sourceTree = "<group>"; };
-		9082648B1C6D24D1009053AC /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuViewController.h; path = ../../../../../Dropbox/GeoFormsMappit/GeoFormsMappit/MenuViewController.h; sourceTree = "<group>"; };
-		9082648C1C6D24D1009053AC /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuViewController.m; path = ../../../../../Dropbox/GeoFormsMappit/GeoFormsMappit/MenuViewController.m; sourceTree = "<group>"; };
-		9082648D1C6D24D1009053AC /* StyleProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StyleProvider.h; path = ../../../../../Dropbox/GeoFormsMappit/GeoFormsMappit/StyleProvider.h; sourceTree = "<group>"; };
-		9082648E1C6D24D1009053AC /* FeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureViewController.h; path = ../../../../../Dropbox/GeoFormsMappit/GeoFormsMappit/FeatureViewController.h; sourceTree = "<group>"; };
-		9082648F1C6D24D1009053AC /* FeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeatureViewController.m; path = ../../../../../Dropbox/GeoFormsMappit/GeoFormsMappit/FeatureViewController.m; sourceTree = "<group>"; };
-		908264901C6D24D1009053AC /* FeatureDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureDetailViewController.h; path = ../../../../../Dropbox/GeoFormsMappit/GeoFormsMappit/FeatureDetailViewController.h; sourceTree = "<group>"; };
-		908264911C6D24D1009053AC /* FeatureDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeatureDetailViewController.m; path = ../../../../../Dropbox/GeoFormsMappit/GeoFormsMappit/FeatureDetailViewController.m; sourceTree = "<group>"; };
+		908264991C6D27D3009053AC /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		9082649A1C6D27D3009053AC /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		9082649B1C6D27D3009053AC /* StyleProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleProvider.h; sourceTree = "<group>"; };
+		9082649C1C6D27D3009053AC /* FeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeatureViewController.h; sourceTree = "<group>"; };
+		9082649D1C6D27D3009053AC /* FeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeatureViewController.m; sourceTree = "<group>"; };
+		9082649E1C6D27D3009053AC /* FeatureDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeatureDetailViewController.h; sourceTree = "<group>"; };
+		9082649F1C6D27D3009053AC /* FeatureDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeatureDetailViewController.m; sourceTree = "<group>"; };
+		908264A71C6D2ADD009053AC /* GFTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFTitleCell.h; sourceTree = "<group>"; };
+		908264A81C6D2ADD009053AC /* GFTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFTitleCell.m; sourceTree = "<group>"; };
+		908264A91C6D2ADD009053AC /* GFKeywordCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFKeywordCell.h; sourceTree = "<group>"; };
+		908264AA1C6D2ADD009053AC /* GFKeywordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFKeywordCell.m; sourceTree = "<group>"; };
+		908264AB1C6D2ADD009053AC /* GFKeywordEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFKeywordEntryCell.h; sourceTree = "<group>"; };
+		908264AC1C6D2ADD009053AC /* GFKeywordEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFKeywordEntryCell.m; sourceTree = "<group>"; };
+		908264AD1C6D2ADD009053AC /* GFDelegateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFDelegateCell.h; sourceTree = "<group>"; };
+		908264AE1C6D2ADD009053AC /* FeatureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeatureCell.h; sourceTree = "<group>"; };
+		908264AF1C6D2ADD009053AC /* FeatureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeatureCell.m; sourceTree = "<group>"; };
 		93A7AED5E6AC8B47559B1A06CA87D2A0 /* Pods-IOS-Geolive-Map_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-IOS-Geolive-Map_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		95537BB913219C11F4E4BFFC5E2A4EFE /* Pods-IOS-Geolive-Map_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-IOS-Geolive-Map_Example-umbrella.h"; sourceTree = "<group>"; };
 		98993CD0BE80A2AFF09CE78D870384B3 /* Pods-IOS-Geolive-Map_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-IOS-Geolive-Map_Example-frameworks.sh"; sourceTree = "<group>"; };
@@ -142,13 +160,22 @@
 		11232B2903DCDDF155370F4C88CDEA9E /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				9082648B1C6D24D1009053AC /* MenuViewController.h */,
-				9082648C1C6D24D1009053AC /* MenuViewController.m */,
-				9082648D1C6D24D1009053AC /* StyleProvider.h */,
-				9082648E1C6D24D1009053AC /* FeatureViewController.h */,
-				9082648F1C6D24D1009053AC /* FeatureViewController.m */,
-				908264901C6D24D1009053AC /* FeatureDetailViewController.h */,
-				908264911C6D24D1009053AC /* FeatureDetailViewController.m */,
+				908264991C6D27D3009053AC /* MenuViewController.h */,
+				9082649A1C6D27D3009053AC /* MenuViewController.m */,
+				9082649B1C6D27D3009053AC /* StyleProvider.h */,
+				9082649C1C6D27D3009053AC /* FeatureViewController.h */,
+				9082649D1C6D27D3009053AC /* FeatureViewController.m */,
+				9082649E1C6D27D3009053AC /* FeatureDetailViewController.h */,
+				9082649F1C6D27D3009053AC /* FeatureDetailViewController.m */,
+				908264A71C6D2ADD009053AC /* GFTitleCell.h */,
+				908264A81C6D2ADD009053AC /* GFTitleCell.m */,
+				908264A91C6D2ADD009053AC /* GFKeywordCell.h */,
+				908264AA1C6D2ADD009053AC /* GFKeywordCell.m */,
+				908264AB1C6D2ADD009053AC /* GFKeywordEntryCell.h */,
+				908264AC1C6D2ADD009053AC /* GFKeywordEntryCell.m */,
+				908264AD1C6D2ADD009053AC /* GFDelegateCell.h */,
+				908264AE1C6D2ADD009053AC /* FeatureCell.h */,
+				908264AF1C6D2ADD009053AC /* FeatureCell.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -285,11 +312,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				908264951C6D24D1009053AC /* FeatureViewController.h in Headers */,
-				908264921C6D24D1009053AC /* MenuViewController.h in Headers */,
+				908264B61C6D2ADD009053AC /* GFDelegateCell.h in Headers */,
+				908264A31C6D27D3009053AC /* FeatureViewController.h in Headers */,
+				908264A01C6D27D3009053AC /* MenuViewController.h in Headers */,
+				908264B01C6D2ADD009053AC /* GFTitleCell.h in Headers */,
 				0545D4926845C91081981CA2A73B029D /* IOS-Geolive-Map-umbrella.h in Headers */,
-				908264971C6D24D1009053AC /* FeatureDetailViewController.h in Headers */,
-				908264941C6D24D1009053AC /* StyleProvider.h in Headers */,
+				908264B71C6D2ADD009053AC /* FeatureCell.h in Headers */,
+				908264A51C6D27D3009053AC /* FeatureDetailViewController.h in Headers */,
+				908264B21C6D2ADD009053AC /* GFKeywordCell.h in Headers */,
+				908264B41C6D2ADD009053AC /* GFKeywordEntryCell.h in Headers */,
+				908264A21C6D27D3009053AC /* StyleProvider.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,9 +470,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				302288EA754BFB6380DC1937C6D294BA /* IOS-Geolive-Map-dummy.m in Sources */,
-				908264961C6D24D1009053AC /* FeatureViewController.m in Sources */,
-				908264981C6D24D1009053AC /* FeatureDetailViewController.m in Sources */,
-				908264931C6D24D1009053AC /* MenuViewController.m in Sources */,
+				908264B11C6D2ADD009053AC /* GFTitleCell.m in Sources */,
+				908264A41C6D27D3009053AC /* FeatureViewController.m in Sources */,
+				908264A61C6D27D3009053AC /* FeatureDetailViewController.m in Sources */,
+				908264B81C6D2ADD009053AC /* FeatureCell.m in Sources */,
+				908264B31C6D2ADD009053AC /* GFKeywordCell.m in Sources */,
+				908264B51C6D2ADD009053AC /* GFKeywordEntryCell.m in Sources */,
+				908264A11C6D27D3009053AC /* MenuViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
