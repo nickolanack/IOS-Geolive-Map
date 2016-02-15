@@ -10,19 +10,7 @@
 #import "FeatureViewController.h"
 #import "FeatureDetailViewController.h"
 
-#import "ConnectionListener.h"
 
-#import "GeoliveServer.h"
-#import "StoredParameters.h"
-
-
-#import "GeolLayer.h"
-#import "GeolMarker.h"
-
-
-
-#import "HTMLParser.h"
-#import "ImageUtilities.h"
 
 #import "MapViewController.h"
 
@@ -32,12 +20,14 @@
 #import "MapFormDelegate.h"
 
 
+
+
 @interface MenuViewController ()
 
 @property NSMutableDictionary *media;
 
 
-@property ConnectionListener *listener;
+
 @property CLLocationManager *locMan;
 
 @property UIImagePickerController *picker;
@@ -74,9 +64,9 @@
     }
     
    
-    if(_styler&&[_styler respondsToSelector:@selector(textForNamedItem:withDefault:)]){
+    if(_styler&&[_styler respondsToSelector:@selector(textForNamedLabel:withDefault:)]){
    
-        [self.startNewFormButton setTitle:[_styler textForNamedlabel:@"newformbutton.title" withDefault:self.startNewFormButton.titleLabel.text] forState:UIControlStateNormal];
+        [self.startNewFormButton setTitle:[_styler textForNamedLabel:@"newformbutton.title" withDefault:self.startNewFormButton.titleLabel.text] forState:UIControlStateNormal];
         
     }
     
@@ -229,22 +219,26 @@
          * Upload Image Files
          */
         
+        NSDictionary *formData=@{@"data":self.details, @"attributes":self.attributes};
         if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
             [data setValue:[NSNumber numberWithBool:true] forKey:@"uploading"];
-        
-            [_delegate uploadImage:[data objectForKey:UIImagePickerControllerOriginalImage] withProgressHandler:^(float percentFinished) {
-                [self.progressView setProgress:percentFinished];
+            MenuViewController * __weak me=self;
+            [_delegate saveForm:formData withImage:[data objectForKey:UIImagePickerControllerOriginalImage] withProgressHandler:^(float percentFinished) {
+                [me.progressView setProgress:percentFinished];
             } andCompletion:^(NSDictionary *response) {
-                [self createMarkerAfterUpload:response];
-                [self hideUploadStatus];
-                [self.progressView setProgress:0.0];
                 
+                [me hideUploadStatus];
+                [me.progressView setProgress:0.0];
+                [me clearData];
+                [me refreshUsersFeaturesList];
             }];
             
         }else if ([data valueForKey:@"uploading"]!=nil){
             
         }
     }else{
+        
+         NSDictionary *formData=@{@"data":self.details, @"attributes":self.attributes};
         if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.movie"]){
             
             
@@ -252,12 +246,16 @@
              * Upload Video Files
              */
             
+          
             if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
-                
-                [_delegate uploadVideo:[data objectForKey:UIImagePickerControllerMediaURL] withProgressHandler:^(float percentFinished) {
-                    [self.progressView setProgress:percentFinished];
+                MenuViewController * __weak me=self;
+                [_delegate  saveForm:formData withVideo:[data objectForKey:UIImagePickerControllerMediaURL] withProgressHandler:^(float percentFinished) {
+                    [me.progressView setProgress:percentFinished];
                 } andCompletion:^(NSDictionary *response) {
-                    [self createMarkerAfterUpload:response];
+                    [me hideUploadStatus];
+                    [me.progressView setProgress:0.0];
+                    [me clearData];
+                    [me refreshUsersFeaturesList];
                 }];
             }
             
@@ -278,70 +276,11 @@
 
 -(void)createMarkerAfterUpload:(NSDictionary *)response{
     
-    //[self takePhoto];
     
     
-    [self.progressView setProgress:0.0];
-    [self displayUploadStatus];
     
-    if([[response objectForKey:@"success"] boolValue]){
-        GeolLayer *l=[[GeolLayer alloc] init];
-        [l setID:[[GeoliveServer SharedInstance] getDefaultLayer]];
-        GeolMarker *m=[[GeolMarker alloc] init];
-        
-        
-        NSString *name=nil;
-        if(self.details!=nil){
-            name=[self.details objectForKey:@"name"];
-        }
-        if(name==nil)name=@"";
-        
-        
-        [m setName:name];
-        [m setDescription:[response objectForKey:@"html"]];
-        [m setLayer:l];
-        
-        
-        [m setIcon:[[GeoliveServer SharedInstance] getDefaultIcon]];
-        CLLocation *location=[self.locMan location];
-        [m setLatlng:[location coordinate]];
-        NSLog(@"Coordinate: %@", location);
-        [m save];
-        
-        if([[self.attributes valueForKey:@"keywords"] count]){
-            
-            //[m setAttributesArray:self.attributes table:[StoredParameters GetObjectForKey:@"AttributeTable"]];
-        }
-
-        NSString *ID=[m getID];
-        
-        NSLog(@"%@",[m getID]);
-        
-        UILocalNotification *notification = [[UILocalNotification alloc] init];
-        [notification setHasAction:YES];
-        
-        NSString *title=@"untitled";
-        if(![name isEqualToString:@""]){
-            title=name;
-        }
-        
-        [notification setAlertBody:[NSString stringWithFormat:@"Created Marker: %@, (%@)", title, ID]];
-        [notification setAlertAction:@"Cool"];
-        [notification setApplicationIconBadgeNumber:0];
-        [notification setSoundName:UILocalNotificationDefaultSoundName];
-        //UIApplication *a=((UIApplication *)[StoredParameters GetObjectForKey:@"Application"]);
-  
-        
-        notification.fireDate = [NSDate date];
-        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-        
-        [self refreshUsersFeaturesList];
-        
-       // [a presentLocalNotificationNow:notification];
-        
-    }
     
-    [self clearData];
+    
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -397,19 +336,14 @@
     [self hideEmptyMessage];
     [self displayUpdatingMessage];
     
-    MenuViewController *me=self;
+
 
     
-    [[[GeoliveServer SharedInstance] getJson] queryTask:@"users_mapitem_list" WithJson:@{} completion:^(NSDictionary *result){
-        NSLog(@"%@", result);
-        if([result objectForKey:@"success"]&&[[result objectForKey:@"success"] boolValue]==true){
-        
-            
-            _usersFeatures=[result objectForKey:@"results"];
-            [me reloadCollection];
-        
-        }
+    [_delegate listUsersMenuItemsWithCompletion:^(NSArray *results) {
+        _usersFeatures=results;
     }];
+    
+   
 
     //[self performSelector:@selector(reloadCollection) withObject:nil afterDelay:10.0];
     
@@ -465,41 +399,8 @@
     
     NSDictionary *feature=[_usersFeatures objectAtIndex:[indexPath row]];
     
-    NSArray *images=[HTMLParser ParseImageUrls:[feature objectForKey:@"description"]];
-    if([images count]){
+    [_delegate formatMenuItemsCell:fcell withData:feature];
     
-        NSString *image=[images objectAtIndex:0];
-        if([image rangeOfString:@"http" options:NSCaseInsensitiveSearch].location!=0){
-            GeoliveServer *s=[GeoliveServer SharedInstance];
-           image= [s.server stringByAppendingString:[@"/" stringByAppendingString:image]];
-            
-        }
-        
-        
-        
-        [ImageUtilities CachedImageFromUrl:image completion:^(UIImage *image){
-           
-            [fcell.imageView setImage: [ImageUtilities ThumbnailImage:image Width:200 AndHeight:200]];
-        }];
-    }
-    
-    
-    NSString *icon=[feature objectForKey:@"icon"];
-    
-    if(icon&&(![icon isEqualToString:@""])){
-        if([icon rangeOfString:@"http" options:NSCaseInsensitiveSearch].location!=0){
-            GeoliveServer *s=[GeoliveServer SharedInstance];
-            icon= [s.server stringByAppendingString:[@"/" stringByAppendingString:icon]];
-            
-        }
-        
-        
-        [ImageUtilities CachedImageFromUrl:icon completion:^(UIImage *image){
-            [fcell.placemarkView setImage:image];
-        }];
-    
-    
-    }
     
     
     return cell;
