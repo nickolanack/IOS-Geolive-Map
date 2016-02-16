@@ -14,6 +14,6 @@
 
 - (UIColor *) colorForNamedStyle:(NSString *)name withDefault:(UIColor *)color;
 - (NSString *) textForNamedLabel:(NSString *)name withDefault:(NSString *)text;
-- (NSString *) imageForNamedImage:(NSString *)name withDefault:(UIImage *)image;
+- (UIImage *) imageForNamedImage:(NSString *)name withDefault:(UIImage *)image;
 
 @end

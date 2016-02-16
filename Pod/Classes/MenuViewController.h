@@ -35,5 +35,6 @@
 - (IBAction)onMapButtonTap:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIButton *startNewFormButton;
+@property (unsafe_unretained, nonatomic) IBOutlet UIButton *bottomButton0;
 
 @end

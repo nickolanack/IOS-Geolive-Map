@@ -35,6 +35,8 @@
 
 @property NSIndexPath *selectedFeaturePath;
 
+@property UIRefreshControl *refreshControl;
+
 @property id<StyleProvider> styler;
 @property id<MapFormDelegate> delegate;
 
@@ -55,6 +57,10 @@
         _styler=[UIApplication sharedApplication].delegate;
     }
     
+    if(!_styler){
+        @throw [[NSException alloc] initWithName:@"No StyleProvider" reason:@"Requires StyleProvider to handle styles" userInfo:nil];
+    }
+    
     if([[UIApplication sharedApplication].delegate conformsToProtocol:@protocol(MapFormDelegate)]){
         _delegate=[UIApplication sharedApplication].delegate;
     }
@@ -63,13 +69,11 @@
         @throw [[NSException alloc] initWithName:@"No MapFormDelegate" reason:@"Requires MapFormDelegate to handle implementation specific methods" userInfo:nil];
     }
     
-   
-    if(_styler&&[_styler respondsToSelector:@selector(textForNamedLabel:withDefault:)]){
-   
-        [self.startNewFormButton setTitle:[_styler textForNamedLabel:@"newformbutton.title" withDefault:self.startNewFormButton.titleLabel.text] forState:UIControlStateNormal];
-        
-    }
+    [self initBottomBar];
     
+
+        [self.startNewFormButton setTitle:[_styler textForNamedLabel:@"newformbutton.title" withDefault:self.startNewFormButton.titleLabel.text] forState:UIControlStateNormal];
+   
     self.locMan=[[CLLocationManager alloc] init];
     [self.locMan setDelegate:self];
     
@@ -97,7 +101,6 @@
     
     if(!self.picker){
     
-    
         _picker = [[UIImagePickerController alloc] init];
         
         //picker.wantsFullScreenLayout = YES;
@@ -109,11 +112,15 @@
         
         _picker.mediaTypes=[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
         _picker.delegate = self;
-        
-        
-    
     
     }
+    
+    
+
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self action:@selector(refreshUsersFeaturesList)
+             forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:_refreshControl];
 
    
     [self performSelector:@selector(refreshUsersFeaturesList) withObject:nil afterDelay:5.0];
@@ -122,15 +129,7 @@
 
 
 
--(void)displayUploadStatus{
-    [self.label setHidden:false];
-    [self.progressView setHidden:false];
-}
 
--(void)hideUploadStatus{
-    [self.label setHidden:true];
-    [self.progressView setHidden:true];
-}
 
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status __OSX_AVAILABLE_STARTING(__MAC_10_7,__IPHONE_4_2){
@@ -213,33 +212,47 @@
     
     NSLog(@"%s: %@",__PRETTY_FUNCTION__,data);
     
+    NSDictionary *formData=@{@"name":[self.details objectForKey:@"name"], @"attributes":self.attributes, @"location":[self.locMan location]};
+
+    [self displayUploadStatus];
+    
+    MenuViewController * __block me=self;
+    
+    void (^progressHandler)(float) = ^(float percentFinished) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [me.progressView setProgress:percentFinished];
+        });
+        
+    };
+    void (^completion)(NSDictionary *) = ^(NSDictionary *response) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [me hideUploadStatus];
+            [me.progressView setProgress:0.0];
+            [me clearData];
+            [me refreshUsersFeaturesList];
+        });
+    };
+    
+    
     if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.image"]){
         
         /*
          * Upload Image Files
          */
-        
-        NSDictionary *formData=@{@"data":self.details, @"attributes":self.attributes};
+    
         if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
             [data setValue:[NSNumber numberWithBool:true] forKey:@"uploading"];
-            MenuViewController * __weak me=self;
-            [_delegate saveForm:formData withImage:[data objectForKey:UIImagePickerControllerOriginalImage] withProgressHandler:^(float percentFinished) {
-                [me.progressView setProgress:percentFinished];
-            } andCompletion:^(NSDictionary *response) {
-                
-                [me hideUploadStatus];
-                [me.progressView setProgress:0.0];
-                [me clearData];
-                [me refreshUsersFeaturesList];
-            }];
+           
+            [_delegate saveForm:formData withImage:[data objectForKey:UIImagePickerControllerOriginalImage] withProgressHandler:progressHandler andCompletion:completion];
             
         }else if ([data valueForKey:@"uploading"]!=nil){
             
         }
     }else{
         
-         NSDictionary *formData=@{@"data":self.details, @"attributes":self.attributes};
-        if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.movie"]){
+                 if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.movie"]){
             
             
             /*
@@ -248,15 +261,8 @@
             
           
             if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
-                MenuViewController * __weak me=self;
-                [_delegate  saveForm:formData withVideo:[data objectForKey:UIImagePickerControllerMediaURL] withProgressHandler:^(float percentFinished) {
-                    [me.progressView setProgress:percentFinished];
-                } andCompletion:^(NSDictionary *response) {
-                    [me hideUploadStatus];
-                    [me.progressView setProgress:0.0];
-                    [me clearData];
-                    [me refreshUsersFeaturesList];
-                }];
+            
+                [_delegate  saveForm:formData withVideo:[data objectForKey:UIImagePickerControllerMediaURL] withProgressHandler:progressHandler andCompletion:completion];
             }
             
         }
@@ -274,14 +280,6 @@
 
 }
 
--(void)createMarkerAfterUpload:(NSDictionary *)response{
-    
-    
-    
-    
-    
-    
-}
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
@@ -332,49 +330,65 @@
 }
 
 
+
+#pragma mark Status
+
+-(void)hideEmptyMessage{
+    [self.emptyMsgLabel setHidden:true];
+    [self.emptyMsgUrl setHidden:true];
+}
+-(void)displayEmptyMessage{
+    
+    [self.emptyMsgLabel setHidden:false];
+    [self.emptyMsgUrl setHidden:false];
+}
+-(void)displayUpdatingMessage{
+    [self.updatingLabel setHidden:false];
+    //[self.updatingSpinner setHidden:false];
+}
+-(void)hideUpdatingMessage{
+    [self.updatingLabel setHidden:true];
+    //[self.updatingSpinner setHidden:true];
+}
+
+-(void)displayUploadStatus{
+    [self.label setHidden:false];
+    [self.progressView setHidden:false];
+}
+
+-(void)hideUploadStatus{
+    [self.label setHidden:true];
+    [self.progressView setHidden:true];
+}
+
+#pragma mark Collection View
 -(void)refreshUsersFeaturesList{
     [self hideEmptyMessage];
     [self displayUpdatingMessage];
     
-
-
+    if(!_refreshControl.refreshing){
+        [_refreshControl beginRefreshing];
+    }
+    
+    
+    
     
     [_delegate listUsersMenuItemsWithCompletion:^(NSArray *results) {
         _usersFeatures=results;
+        [self hideUpdatingMessage];
+        [self reloadCollection];
+        [_refreshControl endRefreshing];
     }];
     
-   
-
+    
+    
     //[self performSelector:@selector(reloadCollection) withObject:nil afterDelay:10.0];
     
 }
 
 -(void)reloadCollection{
     
-    //_usersFeatures=@[@"",@"",@"",@"",@""];
-    [self hideUpdatingMessage];
     [self.collectionView reloadData];
-}
-
--(void)hideEmptyMessage{
-    
-    [self.emptyMsgLabel setHidden:true];
-    [self.emptyMsgUrl setHidden:true];
-    
-}
--(void)displayEmptyMessage{
-    
-    [self.emptyMsgLabel setHidden:false];
-    [self.emptyMsgUrl setHidden:false];
-    
-}
--(void)displayUpdatingMessage{
-    [self.updatingLabel setHidden:false];
-    [self.updatingSpinner setHidden:false];
-}
--(void)hideUpdatingMessage{
-    [self.updatingLabel setHidden:true];
-    [self.updatingSpinner setHidden:true];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -413,11 +427,32 @@
     return true;
 }
 
+
+#pragma mark Bottom Bar Buttons
+
+-(void)initBottomBar{
+    
+    int buttonCount= [_delegate menuFormNumberOfButtons];
+    NSArray *buttons=@[self.bottomButton0];
+    for(int i=0;i<buttons.count;i++){
+        UIButton *button=[buttons objectAtIndex:i];
+        
+        if(i<buttonCount){
+            UIImage *image =[_styler imageForNamedImage:[NSString stringWithFormat:@"button.%i", i] withDefault:nil];
+            if(image){
+                [button setImage:image forState:UIControlStateNormal];
+            }
+        }else{
+            [button setHidden:true];
+            
+        }
+    }
+
+}
+
 - (IBAction)onMapButtonTap:(id)sender {
     
+    [_delegate menuForm:(MenuViewController *) self ButonWasClickedAtIndex:0];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Map" bundle:nil];
-    UIViewController *myController = [storyboard instantiateInitialViewController];
-    [self.navigationController pushViewController: myController animated:YES];
 }
 @end

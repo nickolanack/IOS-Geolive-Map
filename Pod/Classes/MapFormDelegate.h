@@ -6,6 +6,7 @@
 
 #import <Foundation/Foundation.h>
 #import "FeatureCell.h"
+#import "MenuViewController.h"
 //#import <UIKit/UIKit.h>
 
 
@@ -27,6 +28,12 @@
 -(void)listUsersMenuItemsWithCompletion:(void (^)(NSArray * results)) completion;
 -(void)formatMenuItemsCell:(FeatureCell *)cell withData:(NSDictionary *)data;
 
+-(int)menuFormNumberOfButtons;
+-(void)menuForm:(MenuViewController *) view ButonWasClickedAtIndex:(int)index;
+
+
+
 @optional
+
 
 @end
