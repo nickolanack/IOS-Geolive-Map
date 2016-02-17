@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="RF5-ax-zW4">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -61,17 +60,12 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="7w0-0O-HCD"/>
                                 </connections>
                             </collectionView>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="You do not have any placemarks" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSD-jg-Jo9">
-                                <rect key="frame" x="173" y="257" width="255" height="21"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You do not have any placemarks" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cSD-jg-Jo9">
+                                <rect key="frame" x="53" y="257" width="497" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aBC-U8-BuL">
-                                <rect key="frame" x="307" y="280" width="121" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <state key="normal" title="help me make some"/>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="updating" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pJx-fz-3rH">
                                 <rect key="frame" x="269" y="316" width="63" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -86,7 +80,7 @@
                                 <subviews>
                                     <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Qcs-hp-oAO">
                                         <rect key="frame" x="8" y="41" width="150" height="2"/>
-                                        <color key="progressTintColor" red="0.034608530659999998" green="1" blue="0.20684914779999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="progressTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </progressView>
                                     <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="uploading" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DiW-ZV-O5a">
                                         <rect key="frame" x="8" y="17" width="87" height="16"/>
@@ -113,6 +107,14 @@
                                     <constraint firstAttribute="trailing" secondItem="n0w-rj-hle" secondAttribute="trailing" constant="20" id="pAf-yX-YX0"/>
                                 </constraints>
                             </view>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aBC-U8-BuL">
+                                <rect key="frame" x="429" y="280" width="121" height="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <state key="normal" title="need help ?"/>
+                                <connections>
+                                    <action selector="onHelpTap:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="GPs-d3-PGF"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -120,17 +122,18 @@
                             <constraint firstItem="4FP-q5-N0u" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="7n4-hD-3sf"/>
                             <constraint firstItem="4FP-q5-N0u" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="Hah-BV-qt7"/>
                             <constraint firstAttribute="trailingMargin" secondItem="2Ae-Gi-H1N" secondAttribute="trailing" constant="-20" id="O87-Pc-6rF"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="cSD-jg-Jo9" secondAttribute="trailing" constant="30" id="T6V-O9-ann"/>
                             <constraint firstItem="2Ae-Gi-H1N" firstAttribute="top" secondItem="4FP-q5-N0u" secondAttribute="bottom" id="WVo-KD-jQL"/>
                             <constraint firstItem="4FP-q5-N0u" firstAttribute="top" secondItem="IJH-cR-8aB" secondAttribute="bottom" id="Zrw-eS-xee"/>
                             <constraint firstItem="aBC-U8-BuL" firstAttribute="trailing" secondItem="cSD-jg-Jo9" secondAttribute="trailing" id="cnP-iT-x8j"/>
                             <constraint firstItem="guE-Ti-g2m" firstAttribute="top" secondItem="pJx-fz-3rH" secondAttribute="bottom" constant="8" id="d9j-eh-OZc"/>
                             <constraint firstItem="aBC-U8-BuL" firstAttribute="top" secondItem="cSD-jg-Jo9" secondAttribute="bottom" constant="2" id="dpY-Qv-DSq"/>
-                            <constraint firstItem="cSD-jg-Jo9" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="h5I-O9-9Tg"/>
                             <constraint firstItem="2Ae-Gi-H1N" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-20" id="hgl-P3-1aF"/>
                             <constraint firstItem="pJx-fz-3rH" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="jMx-lr-FDS"/>
                             <constraint firstItem="pJx-fz-3rH" firstAttribute="top" secondItem="aBC-U8-BuL" secondAttribute="bottom" constant="8" id="pVw-a4-Dn8"/>
                             <constraint firstItem="guE-Ti-g2m" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="wAQ-ir-DlE"/>
                             <constraint firstItem="Mb1-lH-skJ" firstAttribute="top" secondItem="2Ae-Gi-H1N" secondAttribute="bottom" id="yUI-ee-tYV"/>
+                            <constraint firstItem="cSD-jg-Jo9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="33" id="za0-a6-SAf"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gi2-7k-5sv">
@@ -145,6 +148,13 @@
                                 <connections>
                                     <action selector="onPhotoClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="6lL-di-576"/>
                                 </connections>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="oYl-ux-dlL">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9G2-Go-ylf">
+                                <rect key="frame" x="541" y="7" width="39" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Edit"/>
                             </button>
                         </barButtonItem>
                     </navigationItem>

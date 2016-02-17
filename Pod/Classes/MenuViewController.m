@@ -72,7 +72,8 @@
     [self initBottomBar];
     
 
-        [self.startNewFormButton setTitle:[_styler textForNamedLabel:@"newformbutton.title" withDefault:self.startNewFormButton.titleLabel.text] forState:UIControlStateNormal];
+    [self.startNewFormButton setTitle:[_styler textForNamedLabel:@"newformbutton.title" withDefault:self.startNewFormButton.titleLabel.text] forState:UIControlStateNormal];
+    [self.emptyMsgLabel setText:[_styler textForNamedLabel:@"emptymessage.label" withDefault:self.emptyMsgLabel.text]];
    
     self.locMan=[[CLLocationManager alloc] init];
     [self.locMan setDelegate:self];
@@ -428,6 +429,8 @@
 }
 
 
+
+
 #pragma mark Bottom Bar Buttons
 
 -(void)initBottomBar{
@@ -452,7 +455,12 @@
 
 - (IBAction)onMapButtonTap:(id)sender {
     
-    [_delegate menuForm:(MenuViewController *) self ButonWasClickedAtIndex:0];
+    [_delegate menuForm:(MenuViewController *) self ButonWasTappedAtIndex:0];
+    
+}
+- (IBAction)onHelpTap:(id)sender {
+    
+    [_delegate menuFormHelpButtonWasTapped:(MenuViewController *) self];
     
 }
 @end

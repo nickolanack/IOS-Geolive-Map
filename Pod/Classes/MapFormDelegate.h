@@ -29,9 +29,8 @@
 -(void)formatMenuItemsCell:(FeatureCell *)cell withData:(NSDictionary *)data;
 
 -(int)menuFormNumberOfButtons;
--(void)menuForm:(MenuViewController *) view ButonWasClickedAtIndex:(int)index;
-
-
+-(void)menuForm:(MenuViewController *) view ButonWasTappedAtIndex:(int)index;
+-(void)menuFormHelpButtonWasTapped:(MenuViewController *) view;
 
 @optional
 
