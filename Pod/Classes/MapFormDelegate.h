@@ -29,10 +29,17 @@
 -(void)formatMenuItemsCell:(FeatureCell *)cell withData:(NSDictionary *)data;
 
 -(int)menuFormNumberOfButtons;
--(void)menuForm:(MenuViewController *) view ButonWasTappedAtIndex:(int)index;
+-(void)menuForm:(MenuViewController *) view BottomBarButtonWasTappedAtIndex:(int)index;
+
+
+
+
+
+
 -(void)menuFormHelpButtonWasTapped:(MenuViewController *) view;
 
 @optional
 
+-(void)menuForm:(MenuViewController *) view TopBarButtonWasTappedAtIndex:(int)index;
 
 @end

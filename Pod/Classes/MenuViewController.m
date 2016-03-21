@@ -178,8 +178,12 @@
             self.attributes=[[NSMutableDictionary alloc] initWithDictionary:@{@"keywords":@[]}];
             self.details=[[NSMutableDictionary alloc] initWithDictionary:@{@"name":@""}];
             
+            
            
-            [self performSegueWithIdentifier:@"showAttributes" sender:self];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UserForm" bundle:nil];
+            UIViewController *myController = [storyboard instantiateInitialViewController];
+            [((FeatureViewController *)myController) setDelegate:self];
+            [self.navigationController pushViewController: myController animated:YES];
             
         }else{
             
@@ -188,11 +192,6 @@
         }
         
     }
-    
-
-
-    
-    
     
 }
 -(void)cancel{
@@ -286,13 +285,6 @@
     
     UIViewController *vc=[segue destinationViewController];
     
-    if([vc isKindOfClass:[FeatureViewController class]]){
-        
-        FeatureViewController *dvc=(FeatureViewController *)vc;
-        [dvc setDelegate:self];
-    
-    }
-    
     
     if([vc isKindOfClass:[FeatureDetailViewController class]]){
         
@@ -301,11 +293,7 @@
         
     }
     
-    if([vc isKindOfClass:[MapViewController class]]){
-        
-        //MapViewController *mvc=(MapViewController *)vc;
-        
-    }
+
 
 }
 
@@ -428,7 +416,14 @@
     return true;
 }
 
-
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UserItemDetail" bundle:nil];
+    UIViewController *myController = [storyboard instantiateInitialViewController];
+    [((FeatureDetailViewController *)myController) setMetadata:[_usersFeatures objectAtIndex:[_selectedFeaturePath row]]];
+    [self.navigationController pushViewController: myController animated:YES];
+    
+}
 
 
 #pragma mark Bottom Bar Buttons
@@ -455,7 +450,7 @@
 
 - (IBAction)onMapButtonTap:(id)sender {
     
-    [_delegate menuForm:(MenuViewController *) self ButonWasTappedAtIndex:0];
+    [_delegate menuForm:(MenuViewController *) self BottomBarButtonWasTappedAtIndex:0];
     
 }
 - (IBAction)onHelpTap:(id)sender {

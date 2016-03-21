@@ -37,7 +37,7 @@
     [self.delegate save];
 }
 
-- (IBAction)onCancelFormButtonTap:(id)sender:(id)sender {
+- (IBAction)onCancelFormButtonTap:(id)sender {
     [self.delegate cancel];
 }
 
