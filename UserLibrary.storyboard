@@ -421,7 +421,7 @@
         <image name="xsm_edit.png" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Gvh-KZ-cwd"/>
         <segue reference="lHI-Lx-l4g"/>
+        <segue reference="ihP-QG-oPO"/>
     </inferredMetricsTieBreakers>
 </document>
