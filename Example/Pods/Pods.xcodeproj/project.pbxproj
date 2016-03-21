@@ -14,8 +14,9 @@
 		302288EA754BFB6380DC1937C6D294BA /* IOS-Geolive-Map-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EB393767BE1032D822CA9726C76B5E6 /* IOS-Geolive-Map-dummy.m */; };
 		549FE94730524092752B0B406305149B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
 		5BC11A38D59CF12F1A5F6C6375476702 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
+		902C7DAE1CA080B900A87E6C /* UserForm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 902C7DAD1CA080B900A87E6C /* UserForm.storyboard */; };
 		9082647A1C6D2378009053AC /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = 908264791C6D2378009053AC /* Assets */; };
-		9082648A1C6D248B009053AC /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 908264891C6D248B009053AC /* Menu.storyboard */; };
+		9082648A1C6D248B009053AC /* UserLibrary.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 908264891C6D248B009053AC /* UserLibrary.storyboard */; };
 		908264A01C6D27D3009053AC /* MenuViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 908264991C6D27D3009053AC /* MenuViewController.h */; };
 		908264A11C6D27D3009053AC /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9082649A1C6D27D3009053AC /* MenuViewController.m */; };
 		908264A21C6D27D3009053AC /* StyleProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9082649B1C6D27D3009053AC /* StyleProvider.h */; };
@@ -78,8 +79,9 @@
 		6A4BE1B42384F2768F533F220CCCB966 /* Pods-IOS-Geolive-Map_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-IOS-Geolive-Map_Example.release.xcconfig"; sourceTree = "<group>"; };
 		73A11C10F4B8623D06C5C20BE841E574 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7EFB2CD8285349AA1E8E00CB82E6B8FB /* IOS-Geolive-Map.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "IOS-Geolive-Map.modulemap"; sourceTree = "<group>"; };
+		902C7DAD1CA080B900A87E6C /* UserForm.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserForm.storyboard; sourceTree = "<group>"; };
 		908264791C6D2378009053AC /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
-		908264891C6D248B009053AC /* Menu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Menu.storyboard; path = ../Menu.storyboard; sourceTree = "<group>"; };
+		908264891C6D248B009053AC /* UserLibrary.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = UserLibrary.storyboard; path = ../UserLibrary.storyboard; sourceTree = "<group>"; };
 		908264991C6D27D3009053AC /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		9082649A1C6D27D3009053AC /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		9082649B1C6D27D3009053AC /* StyleProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleProvider.h; sourceTree = "<group>"; };
@@ -212,7 +214,8 @@
 		57CE94EAEF25170095CD9B86FD236D3F /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				908264891C6D248B009053AC /* Menu.storyboard */,
+				908264891C6D248B009053AC /* UserLibrary.storyboard */,
+				902C7DAD1CA080B900A87E6C /* UserForm.storyboard */,
 				908264791C6D2378009053AC /* Assets */,
 				11232B2903DCDDF155370F4C88CDEA9E /* Classes */,
 			);
@@ -442,8 +445,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9082648A1C6D248B009053AC /* Menu.storyboard in Resources */,
+				9082648A1C6D248B009053AC /* UserLibrary.storyboard in Resources */,
 				00E39CA550D1D4708944FF1DCC3CCCDF /* IOS-Geolive-Map.bundle in Resources */,
+				902C7DAE1CA080B900A87E6C /* UserForm.storyboard in Resources */,
 				9082647A1C6D2378009053AC /* Assets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -18,7 +18,7 @@
 
 
 
-- (IBAction)saveClick:(id)sender;
-- (IBAction)cancelClick:(id)sender;
+- (IBAction)onSaveFormButtonTap:(id)sender;
+- (IBAction)onCancelFormButtonTap:(id)sender;
 
 @end

@@ -31,13 +31,13 @@
 
 
 }
+#pragma Mark Buttons
 
-
-- (IBAction)saveClick:(id)sender {
+- (IBAction)onSaveFormButtonTap:(id)sender {
     [self.delegate save];
 }
 
-- (IBAction)cancelClick:(id)sender {
+- (IBAction)onCancelFormButtonTap:(id)sender:(id)sender {
     [self.delegate cancel];
 }
 
