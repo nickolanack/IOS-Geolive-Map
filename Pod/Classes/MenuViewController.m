@@ -406,9 +406,22 @@
     
     
     
+    
     return cell;
 
 }
+
+//Dynamic collectionview size to fit the most
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+
+
+    int extra=((int)_collectionView.frame.size.width)%131;
+    extra+=3;
+    return UIEdgeInsetsMake(0, extra/2, 0, extra/2);
+   
+
+}
+
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath{
 
@@ -425,6 +438,9 @@
     
 }
 
+-(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
+    [_collectionView.collectionViewLayout invalidateLayout];
+}
 
 #pragma mark Bottom Bar Buttons
 
