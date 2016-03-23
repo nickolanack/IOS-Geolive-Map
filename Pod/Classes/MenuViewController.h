@@ -9,19 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface MenuViewController : UIViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate , UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
-@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
+@interface MenuViewController : UIViewController<UINavigationControllerDelegate, CLLocationManagerDelegate , UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 
-@property NSMutableDictionary *attributes;
-@property NSMutableDictionary *details;
 
 
-//-(void)takePhoto;
--(void)save;
--(void)cancel;
 
-@property (weak, nonatomic) IBOutlet UILabel *label;
+
 
 - (IBAction)onPhotoClick:(id)sender;
 

@@ -24,13 +24,12 @@
 
 @interface MenuViewController ()
 
-@property NSMutableDictionary *media;
 
 
 
-@property CLLocationManager *locMan;
 
-@property UIImagePickerController *picker;
+
+
 @property NSArray *usersFeatures;
 
 @property NSIndexPath *selectedFeaturePath;
@@ -45,7 +44,7 @@
 
 @implementation MenuViewController
 
-@synthesize media, attributes, details;
+
 
 - (void)viewDidLoad
 {
@@ -75,46 +74,11 @@
     [self.startNewFormButton setTitle:[_styler textForNamedLabel:@"newformbutton.title" withDefault:self.startNewFormButton.titleLabel.text] forState:UIControlStateNormal];
     [self.emptyMsgLabel setText:[_styler textForNamedLabel:@"emptymessage.label" withDefault:self.emptyMsgLabel.text]];
    
-    self.locMan=[[CLLocationManager alloc] init];
-    [self.locMan setDelegate:self];
-    
-    [self.progressView setProgress:0.0];
-    
-    if([CLLocationManager locationServicesEnabled] &&
-       [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied)
-    {
-        
-        if([ CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
-            [self.locMan requestWhenInUseAuthorization];
-            [self.locMan startUpdatingLocation];
-        }else{
-            [self.locMan startUpdatingLocation];
-        }
-        
-        
-        
-    }else{
-        
-        NSLog(@"Denied location");
-    }
+  
    
     
     
-    if(!self.picker){
-    
-        _picker = [[UIImagePickerController alloc] init];
-        
-        //picker.wantsFullScreenLayout = YES;
-        _picker.navigationBarHidden = YES;
-        _picker.toolbarHidden = YES;
-        
-        _picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        //picker.showsCameraControls=YES;
-        
-        _picker.mediaTypes=[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
-        _picker.delegate = self;
-    
-    }
+   
     
     
 
@@ -149,136 +113,35 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)takePhoto{
-    
-    
 
-    
-    [self presentViewController:_picker animated:false completion:^{
-        
-        
-    }];
-    
-    
-    
-}
 
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    if(self.media==nil){
-        
-        //[self takePhoto]; //always take a photo first
-        
-    }else{
-        bool showAttributes=true;
-        if(showAttributes&&self.attributes==nil&&self.details==nil){
-            
-            
-            self.attributes=[[NSMutableDictionary alloc] initWithDictionary:@{@"keywords":@[]}];
-            self.details=[[NSMutableDictionary alloc] initWithDictionary:@{@"name":@""}];
-            
-            
-           
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UserForm" bundle:nil];
-            UIViewController *myController = [storyboard instantiateInitialViewController];
-            [((FeatureViewController *)myController) setDelegate:self];
-            [self.navigationController pushViewController: myController animated:YES];
-            
-        }else{
-            
-            [self save];
-            
-        }
-        
-    }
+
     
 }
--(void)cancel{
 
-    [self clearData];
-    if([[self.navigationController topViewController] isKindOfClass:[FeatureViewController class]]){
-        [self.navigationController popViewControllerAnimated:true];
-    }
+
+-(void)displayForm{
+
+    
+    
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UserForm" bundle:nil];
+    UIViewController *myController = [storyboard instantiateInitialViewController];
+    [((FeatureViewController *)myController) setDelegate:self];
+    [self.navigationController pushViewController: myController animated:YES];
 
 }
+
+
 -(void)save{
     
-    if([[self.navigationController topViewController] isKindOfClass:[FeatureViewController class]]){
-        [self.navigationController popViewControllerAnimated:true];
-    }
-    
-    NSMutableDictionary *data=self.media;
-    
-    NSLog(@"%s: %@",__PRETTY_FUNCTION__,data);
-    
-    NSDictionary *formData=@{@"name":[self.details objectForKey:@"name"], @"attributes":self.attributes, @"location":[self.locMan location]};
-
-    [self displayUploadStatus];
-    
-    MenuViewController * __block me=self;
-    
-    void (^progressHandler)(float) = ^(float percentFinished) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [me.progressView setProgress:percentFinished];
-        });
-        
-    };
-    void (^completion)(NSDictionary *) = ^(NSDictionary *response) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [me hideUploadStatus];
-            [me.progressView setProgress:0.0];
-            [me clearData];
-            [me refreshUsersFeaturesList];
-        });
-    };
-    
-    
-    if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.image"]){
-        
-        /*
-         * Upload Image Files
-         */
-    
-        if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
-            [data setValue:[NSNumber numberWithBool:true] forKey:@"uploading"];
-           
-            [_delegate saveForm:formData withImage:[data objectForKey:UIImagePickerControllerOriginalImage] withProgressHandler:progressHandler andCompletion:completion];
-            
-        }else if ([data valueForKey:@"uploading"]!=nil){
-            
-        }
-    }else{
-        
-                 if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.movie"]){
-            
-            
-            /*
-             * Upload Video Files
-             */
-            
-          
-            if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
-            
-                [_delegate  saveForm:formData withVideo:[data objectForKey:UIImagePickerControllerMediaURL] withProgressHandler:progressHandler andCompletion:completion];
-            }
-            
-        }
-        
-    }
+   
 }
 
 
-
--(void)clearData{
-
-    self.media=nil;
-    self.attributes=nil;
-    self.details=nil;
-
-}
 
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -293,30 +156,12 @@
         
     }
     
-
-
 }
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithDictionary:info];
-    self.media=dict;
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-
-}
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        //
-    }];
-    
-}
-
 - (IBAction)onPhotoClick:(id)sender {
-    [self takePhoto];
+    [self displayForm];
 }
+
+
 
 
 
@@ -340,15 +185,7 @@
     //[self.updatingSpinner setHidden:true];
 }
 
--(void)displayUploadStatus{
-    [self.label setHidden:false];
-    [self.progressView setHidden:false];
-}
 
--(void)hideUploadStatus{
-    [self.label setHidden:true];
-    [self.progressView setHidden:true];
-}
 
 #pragma mark Collection View
 -(void)refreshUsersFeaturesList{
@@ -463,6 +300,9 @@
     }
 
 }
+
+
+
 
 - (IBAction)onMapButtonTap:(id)sender {
     

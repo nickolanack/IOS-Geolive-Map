@@ -9,16 +9,21 @@
 #import <UIKit/UIKit.h>
 #import "MenuViewController.h"
 
-@interface FeatureViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface FeatureViewController : UIViewController<UIImagePickerControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property MenuViewController *delegate;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-
+@property NSMutableDictionary *media;
+@property NSMutableDictionary *attributes;
+@property NSMutableDictionary *details;
 
 
 - (IBAction)onSaveFormButtonTap:(id)sender;
 - (IBAction)onCancelFormButtonTap:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
+@property (weak, nonatomic) IBOutlet UILabel *label;
 
 @end

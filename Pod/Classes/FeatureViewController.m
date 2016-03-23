@@ -10,35 +10,162 @@
 #import "GFDelegateCell.h"
 #import "GFKeywordCell.h"
 #import "GFTitleCell.h"
+#import "MapFormDelegate.h"
 
 
 
 @interface FeatureViewController ()
 
+@property id<MapFormDelegate> formDelegate;
+
+@property UIImagePickerController *picker;
+@property CLLocationManager *locMan;
+
+
 @end
 
 @implementation FeatureViewController
 
-@synthesize delegate;
+@synthesize delegate, media, attributes, details;
 
 -(void)viewWillAppear:(BOOL)animated{
     self.navigationItem.hidesBackButton=true;
     self.tableView.editing=true;
+    
+    
+    if([[UIApplication sharedApplication].delegate conformsToProtocol:@protocol(MapFormDelegate)]){
+        _formDelegate=[UIApplication sharedApplication].delegate;
+    }
+    
+    
+    
+    
+    if(!self.picker){
+        
+        _picker = [[UIImagePickerController alloc] init];
+        
+        //picker.wantsFullScreenLayout = YES;
+        _picker.navigationBarHidden = YES;
+        _picker.toolbarHidden = YES;
+        
+        _picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        //picker.showsCameraControls=YES;
+        
+        _picker.mediaTypes=[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+        _picker.delegate = self;
+        
+    }
+    
+    if([CLLocationManager locationServicesEnabled] &&
+       [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied)
+    {
+        
+        if([ CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
+            [self.locMan requestWhenInUseAuthorization];
+            [self.locMan startUpdatingLocation];
+        }else{
+            [self.locMan startUpdatingLocation];
+        }
+        
+        
+        
+    }else{
+        
+        NSLog(@"Denied location");
+    }
+    
+    self.attributes=[[NSMutableDictionary alloc] initWithDictionary:@{@"keywords":@[]}];
+    self.details=[[NSMutableDictionary alloc] initWithDictionary:@{@"name":@""}];
+    
+    
+    
 }
--(void)viewDidAppear:(BOOL)animated{
 
-
-
-
-}
 #pragma Mark Buttons
 
 - (IBAction)onSaveFormButtonTap:(id)sender {
-    [self.delegate save];
+    
+    
+    NSMutableDictionary *data=self.media;
+    
+    NSLog(@"%s: %@",__PRETTY_FUNCTION__,data);
+    
+    NSDictionary *formData=@{@"name":[self.details objectForKey:@"name"], @"attributes":self.attributes, @"location":[self.locMan location]};
+    
+    [self displayUploadStatus];
+    
+    FeatureViewController * __block me=self;
+    
+    void (^progressHandler)(float) = ^(float percentFinished) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [me.progressView setProgress:percentFinished];
+        });
+        
+    };
+    void (^completion)(NSDictionary *) = ^(NSDictionary *response) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [me hideUploadStatus];
+            [me.progressView setProgress:0.0];
+        });
+    };
+    
+    
+    if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.image"]){
+        
+        /*
+         * Upload Image Files
+         */
+        
+        if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
+            [data setValue:[NSNumber numberWithBool:true] forKey:@"uploading"];
+            
+            [_formDelegate saveForm:formData withImage:[data objectForKey:UIImagePickerControllerOriginalImage] withProgressHandler:progressHandler andCompletion:completion];
+            
+        }else if ([data valueForKey:@"uploading"]!=nil){
+            
+        }
+    }else{
+        
+        if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.movie"]){
+            
+            
+            /*
+             * Upload Video Files
+             */
+            
+            
+            if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
+                
+                [_formDelegate  saveForm:formData withVideo:[data objectForKey:UIImagePickerControllerMediaURL] withProgressHandler:progressHandler andCompletion:completion];
+            }
+            
+        }
+        
+    }
+    
+    if([[self.navigationController topViewController] isKindOfClass:[FeatureViewController class]]){
+        [self.navigationController popViewControllerAnimated:true];
+    }
+}
+
+-(void)displayUploadStatus{
+    [self.label setHidden:false];
+    [self.progressView setHidden:false];
+}
+
+-(void)hideUploadStatus{
+    [self.label setHidden:true];
+    [self.progressView setHidden:true];
 }
 
 - (IBAction)onCancelFormButtonTap:(id)sender {
-    [self.delegate cancel];
+    
+    if([[self.navigationController topViewController] isKindOfClass:[FeatureViewController class]]){
+        [self.navigationController popViewControllerAnimated:true];
+    }
+
 }
 
 
@@ -55,7 +182,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
     
-    NSArray *keywords=[self.delegate.attributes objectForKey:@"keywords"];
+    NSArray *keywords=[attributes objectForKey:@"keywords"];
     
     if(keywords!=nil){
         return 3+[keywords count];
@@ -82,8 +209,8 @@
         if([cell isKindOfClass:[GFTitleCell class]]){
             
             NSString *name=nil;
-            if(self.delegate.details!=nil){
-                name=[self.delegate.details objectForKey:@"name"];
+            if(details!=nil){
+                name=[details objectForKey:@"name"];
             }
             
             if(name==nil){
@@ -96,7 +223,7 @@
     }
     
     if(row>1){
-        NSArray *keywords=[self.delegate.attributes objectForKey:@"keywords"];
+        NSArray *keywords=[attributes objectForKey:@"keywords"];
         if(keywords!=nil&&[keywords count]){
             
             if(row<(2+[keywords count])){
@@ -124,7 +251,7 @@
     
 
     if([cell conformsToProtocol:@protocol(GFDelegateCell)]){
-        [((id<GFDelegateCell>)cell) setDelegate:self.delegate];
+        [((id<GFDelegateCell>)cell) setDelegate:self];
         [((id<GFDelegateCell>)cell) setTableView:tableView];
     }
     
@@ -137,7 +264,7 @@
     NSInteger row=indexPath.row;
     if(row==0)return 35;
     if(row>1){
-        NSArray *keywords=[self.delegate.attributes objectForKey:@"keywords"];
+        NSArray *keywords=[attributes objectForKey:@"keywords"];
         if(keywords!=nil&&[keywords count]){
             
             if(row<(2+[keywords count])){
@@ -154,7 +281,7 @@
 {
     NSInteger row=indexPath.row;
     if(row>1){
-        NSArray *keywords=[self.delegate.attributes objectForKey:@"keywords"];
+        NSArray *keywords=[attributes objectForKey:@"keywords"];
         if(keywords!=nil&&[keywords count]){
             
             if(row<(2+[keywords count])){
@@ -172,11 +299,36 @@
     
     if(editingStyle==UITableViewCellEditingStyleDelete){
         NSInteger index=indexPath.row-2;
-        NSMutableArray *a=[[NSMutableArray alloc] initWithArray:[self.delegate.attributes objectForKey:@"keywords"]];
+        NSMutableArray *a=[[NSMutableArray alloc] initWithArray:[attributes objectForKey:@"keywords"]];
         [a removeObjectAtIndex:index];
-        [self.delegate.attributes setObject:[[NSArray alloc] initWithArray:a] forKey:@"keywords"];
+        [attributes setObject:[[NSArray alloc] initWithArray:a] forKey:@"keywords"];
         [self.tableView reloadData];
     }
+    
+}
+
+
+
+-(void)takePhoto{
+    
+    [self presentViewController:_picker animated:false completion:^{
+        
+    }];
+}
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithDictionary:info];
+    self.media=dict;
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+    
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        //
+    }];
     
 }
 

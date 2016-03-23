@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MenuViewController.h"
+#import "FeatureViewController.h"
 
 @protocol GFDelegateCell <NSObject>
 
-@property MenuViewController *delegate;
+@property FeatureViewController *delegate;
 @property UITableView *tableView;
 
 
