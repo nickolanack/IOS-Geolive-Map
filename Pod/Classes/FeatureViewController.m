@@ -56,15 +56,17 @@
         
     }
     
+    _locMan =[[CLLocationManager alloc] init];
+    
     if([CLLocationManager locationServicesEnabled] &&
        [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied)
     {
         
         if([ CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
-            [self.locMan requestWhenInUseAuthorization];
-            [self.locMan startUpdatingLocation];
+            [_locMan requestWhenInUseAuthorization];
+            [_locMan startUpdatingLocation];
         }else{
-            [self.locMan startUpdatingLocation];
+            [_locMan startUpdatingLocation];
         }
         
         
@@ -77,7 +79,7 @@
     self.attributes=[[NSMutableDictionary alloc] initWithDictionary:@{@"keywords":@[]}];
     self.details=[[NSMutableDictionary alloc] initWithDictionary:@{@"name":@""}];
     
-    
+    [self takePhoto];
     
 }
 
@@ -90,7 +92,7 @@
     
     NSLog(@"%s: %@",__PRETTY_FUNCTION__,data);
     
-    NSDictionary *formData=@{@"name":[self.details objectForKey:@"name"], @"attributes":self.attributes, @"location":[self.locMan location]};
+    NSDictionary *formData=@{@"name":[self.details objectForKey:@"name"], @"attributes":self.attributes, @"location":[_locMan location]};
     
     [self displayUploadStatus];
     
@@ -108,6 +110,10 @@
             
             [me hideUploadStatus];
             [me.progressView setProgress:0.0];
+            
+            if([[me.navigationController topViewController] isKindOfClass:[FeatureViewController class]]){
+                [me.navigationController popViewControllerAnimated:true];
+            }
         });
     };
     
@@ -145,9 +151,7 @@
         
     }
     
-    if([[self.navigationController topViewController] isKindOfClass:[FeatureViewController class]]){
-        [self.navigationController popViewControllerAnimated:true];
-    }
+    
 }
 
 -(void)displayUploadStatus{

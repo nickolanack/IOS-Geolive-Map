@@ -26,9 +26,9 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *updatingSpinner;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
-- (IBAction)onMapButtonTap:(id)sender;
+
 
 @property (weak, nonatomic) IBOutlet UIButton *startNewFormButton;
-@property (unsafe_unretained, nonatomic) IBOutlet UIButton *bottomButton0;
+
 
 @end

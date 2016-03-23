@@ -72,6 +72,7 @@
     
 
     [self.startNewFormButton setTitle:[_styler textForNamedLabel:@"newformbutton.title" withDefault:self.startNewFormButton.titleLabel.text] forState:UIControlStateNormal];
+    
     [self.emptyMsgLabel setText:[_styler textForNamedLabel:@"emptymessage.label" withDefault:self.emptyMsgLabel.text]];
    
   
@@ -283,6 +284,10 @@
 
 -(void)initBottomBar{
     
+    return;
+    
+    //DEPRECATED;
+    /*
     int buttonCount= [_delegate menuFormNumberOfButtons];
     NSArray *buttons=@[self.bottomButton0];
     for(int i=0;i<buttons.count;i++){
@@ -298,6 +303,7 @@
             
         }
     }
+    */
 
 }
 
