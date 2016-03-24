@@ -377,9 +377,13 @@
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     
-    [self dismissViewControllerAnimated:YES completion:^{
+    if([[self.navigationController topViewController] isKindOfClass:[FeatureViewController class]]){
+        [self.navigationController popViewControllerAnimated:true];
+    }
+    
+    //[self dismissViewControllerAnimated:YES completion:^{
         //
-    }];
+    //}];
     
 }
 
