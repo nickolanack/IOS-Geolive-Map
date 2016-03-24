@@ -92,7 +92,12 @@
     
     NSLog(@"%s: %@",__PRETTY_FUNCTION__,data);
     
-    NSDictionary *formData=@{@"name":[self.details objectForKey:@"name"], @"attributes":self.attributes, @"location":[_locMan location]};
+    NSDictionary *formData=@{
+                             @"name":[self.details objectForKey:@"name"],
+                             @"description":[self.details objectForKey:@"description"],
+                             @"attributes":self.attributes,
+                             @"location":[_locMan location]
+                             };
     
     [self displayUploadStatus];
     
@@ -185,17 +190,34 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
+    int num=3; //label, title, description
     
-    NSArray *keywords=[attributes objectForKey:@"keywords"];
-    
-    if(keywords!=nil){
-        return 3+[keywords count];
-        
+    for (NSString *attribute in [self attributeNames]) {
+        num+=[self numberOfCellsForAttribute:attribute];
     }
     
-    return 3;
+    return num;
 
 }
+
+-(int)numberOfCellsForAttribute:(NSString *)attribute{
+    
+    NSArray *values=[attributes objectForKey:attribute];
+    if(values){
+        return 1+values.count;
+    }
+    return 1;
+    
+}
+
+-(NSArray *)attributeNames{
+    return @[];// @[@"keywords"];
+}
+-(NSString *)cellIdentifierForAttribute:(NSString *)attribute{
+    return @"keywordCell";
+}
+
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 
@@ -204,6 +226,7 @@
     
     if(row==0){
         cell= [tableView dequeueReusableCellWithIdentifier:@"labelCell"];
+        [cell.textLabel setText:@"BCWF Violation Report"];
         
     }
     
@@ -212,6 +235,8 @@
         
         if([cell isKindOfClass:[GFTitleCell class]]){
             
+            [((GFTitleCell *) cell).titleField setPlaceholder:@"violation type"];
+            [((GFTitleCell *) cell) setFieldName:@"name"];
             NSString *name=nil;
             if(details!=nil){
                 name=[details objectForKey:@"name"];
@@ -226,26 +251,48 @@
         
     }
     
-    if(row>1){
+    if(row==2){
+        cell= [tableView dequeueReusableCellWithIdentifier:@"titleCell"];
+        
+        if([cell isKindOfClass:[GFTitleCell class]]){
+            
+            [((GFTitleCell *) cell).titleField setPlaceholder:@"violation description"];
+            [((GFTitleCell *) cell) setFieldName:@"description"];
+            
+            NSString *name=nil;
+            if(details!=nil){
+                name=[details objectForKey:@"description"];
+            }
+            
+            if(name==nil){
+                name=@"";
+                //[((GFTitleCell *) cell).titleField becomeFirstResponder];
+            }
+            [((GFTitleCell *) cell).titleField setText:name];
+        }
+        
+    }
+    
+    if(row>2){
         NSArray *keywords=[attributes objectForKey:@"keywords"];
         if(keywords!=nil&&[keywords count]){
             
-            if(row<(2+[keywords count])){
+            if(row<(3+[keywords count])){
                 
                 cell= [tableView dequeueReusableCellWithIdentifier:@"keywordLabelCell"];
                 if([cell isKindOfClass:[GFKeywordCell class]]){
-                    ((GFKeywordCell *) cell).value.text=[keywords objectAtIndex:[indexPath item]-2];
+                    ((GFKeywordCell *) cell).value.text=[keywords objectAtIndex:[indexPath item]-3];
                 }
                 
             }
             
-            if(row==(2+[keywords count])){
+            if(row==(3+[keywords count])){
                 cell= [tableView dequeueReusableCellWithIdentifier:@"keywordCell"];
             }
             
         }else{
             
-            if(row==2){
+            if(row==3){
                 cell= [tableView dequeueReusableCellWithIdentifier:@"keywordCell"];
             }
             
@@ -267,11 +314,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger row=indexPath.row;
     if(row==0)return 35;
-    if(row>1){
+    if(row>2){
         NSArray *keywords=[attributes objectForKey:@"keywords"];
         if(keywords!=nil&&[keywords count]){
             
-            if(row<(2+[keywords count])){
+            if(row<(3+[keywords count])){
                 return 35;
             }
             
@@ -288,7 +335,7 @@
         NSArray *keywords=[attributes objectForKey:@"keywords"];
         if(keywords!=nil&&[keywords count]){
             
-            if(row<(2+[keywords count])){
+            if(row<(3+[keywords count])){
                 return YES;
             }
             
@@ -302,7 +349,7 @@
 
     
     if(editingStyle==UITableViewCellEditingStyleDelete){
-        NSInteger index=indexPath.row-2;
+        NSInteger index=indexPath.row-3;
         NSMutableArray *a=[[NSMutableArray alloc] initWithArray:[attributes objectForKey:@"keywords"]];
         [a removeObjectAtIndex:index];
         [attributes setObject:[[NSArray alloc] initWithArray:a] forKey:@"keywords"];

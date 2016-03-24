@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Nick Blackwell. All rights reserved.
 //
 
-#import "GFKeywordEntryCell.h"
+#import "AttributeMultiTextFieldCell.h"
 
 
-@interface GFKeywordEntryCell ()
+@interface AttributeMultiTextFieldCell ()
 
 @property NSMutableArray *keywords;
 @property bool isEditing;
@@ -17,7 +17,7 @@
 @end
 
 
-@implementation GFKeywordEntryCell
+@implementation AttributeMultiTextFieldCell
 
 
 @synthesize delegate, tableView;

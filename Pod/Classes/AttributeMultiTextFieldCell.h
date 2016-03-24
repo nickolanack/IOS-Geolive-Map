@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GFDelegateCell.h"
 
-@interface GFKeywordEntryCell : UITableViewCell<GFDelegateCell, UITextFieldDelegate>
+@interface AttributeMultiTextFieldCell : UITableViewCell<GFDelegateCell, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *keywordField;
 - (IBAction)onEditKeyword:(id)sender;
 

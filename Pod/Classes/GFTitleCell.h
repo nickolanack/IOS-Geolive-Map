@@ -12,6 +12,9 @@
 @interface GFTitleCell : UITableViewCell<GFDelegateCell, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *titleField;
+
+@property NSString *fieldName;
+
 - (IBAction)onEditTitle:(id)sender;
 
 

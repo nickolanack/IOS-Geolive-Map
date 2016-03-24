@@ -10,14 +10,14 @@
 
 @implementation GFTitleCell
 
-@synthesize delegate, tableView;
+@synthesize delegate, tableView, fieldName;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
+   
+    fieldName=@"name";
+    
     return self;
 }
 
@@ -35,7 +35,7 @@
 
 - (IBAction)onEditTitle:(id)sender {
     
-    [self.delegate.details setObject:self.titleField.text forKey:@"name"];
+    [self.delegate.details setObject:self.titleField.text forKey:fieldName];
     
 }
 
