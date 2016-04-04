@@ -20,6 +20,7 @@
 
 @property UIImagePickerController *picker;
 @property CLLocationManager *locMan;
+@property CLLocation *location;
 
 @property NSDictionary *formParameters;
 
@@ -31,7 +32,7 @@
 
 
 -(void)setFormParameters:(NSDictionary *)formParameters{
-
+    
     if(_formParameters){
         @throw [[NSException alloc] initWithName:@"Initialize Form Parameters Exception" reason:@"It is too late initialize form parameters now" userInfo:nil];
     }
@@ -39,6 +40,10 @@
 }
 
 -(void)setFormData:(NSDictionary *)formData{
+    
+    if([formData objectForKey:@"location"]){
+        _location=[formData objectForKey:@"location"];
+    }
     
     
 }
@@ -64,7 +69,7 @@
         //default form paramters
         _formParameters=@{
                           @"startWithImagePicker":[NSNumber numberWithBool:true]
-        };
+                          };
     }
     
     
@@ -84,37 +89,41 @@
         
     }
     
-    _locMan =[[CLLocationManager alloc] init];
-    
-    if([CLLocationManager locationServicesEnabled] &&
-       [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied)
-    {
+    if(_location){
         
-        if([ CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
-            [_locMan requestWhenInUseAuthorization];
+        _locMan =[[CLLocationManager alloc] init];
+        
+        if([CLLocationManager locationServicesEnabled] &&
+           [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied)
+        {
+            
+            if([ CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
+                [_locMan requestWhenInUseAuthorization];
+            }
+            
             [_locMan startUpdatingLocation];
+            _location= [_locMan location];
+            
+            
         }else{
-            [_locMan startUpdatingLocation];
+            
+            NSLog(@"Denied Access to user location");
         }
-        
-        
-        
     }else{
-        
-        NSLog(@"Denied location");
+        NSLog(@"Using supplied location");
     }
     
     self.attributes=[[NSMutableDictionary alloc] initWithDictionary:@{@"keywords":@[]}];
     self.details=[[NSMutableDictionary alloc] initWithDictionary:@{@"name":@""}];
     
     if([self startWithImagePicker]){
-       [self takePhoto];
+        [self takePhoto];
     }
     
 }
 
 -(bool)startWithImagePicker{
-
+    
     if(_formParameters&&[_formParameters objectForKey:@"startWithImagePicker"]){
         return [[_formParameters objectForKey:@"startWithImagePicker"] boolValue];
     }
