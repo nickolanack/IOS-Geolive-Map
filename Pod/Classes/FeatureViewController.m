@@ -89,7 +89,7 @@
         
     }
     
-    if(_location){
+    if(!_location){
         
         _locMan =[[CLLocationManager alloc] init];
         
