@@ -148,7 +148,7 @@
                              @"name":[self.details objectForKey:@"name"],
                              @"description":[self.details objectForKey:@"description"],
                              @"attributes":self.attributes,
-                             @"location":[_locMan location]
+                             @"location":_location
                              };
     
     [self displayUploadStatus];
@@ -189,24 +189,28 @@
         }else if ([data valueForKey:@"uploading"]!=nil){
             
         }
-    }else{
+    }else if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.movie"]){
         
-        if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.movie"]){
+        
+        /*
+         * Upload Video Files
+         */
+        
+        
+        if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
             
-            
-            /*
-             * Upload Video Files
-             */
-            
-            
-            if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
-                
-                [_formDelegate  saveForm:formData withVideo:[data objectForKey:UIImagePickerControllerMediaURL] withProgressHandler:progressHandler andCompletion:completion];
-            }
-            
+            [_formDelegate  saveForm:formData withVideo:[data objectForKey:UIImagePickerControllerMediaURL] withProgressHandler:progressHandler andCompletion:completion];
         }
         
+    }else{
+    
+        //NO Media.!
+        [_formDelegate  saveForm:formData withCompletion:completion];
+        
+    
     }
+    
+    
     
     
 }
