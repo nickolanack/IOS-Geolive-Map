@@ -26,4 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 
+
+-(void)setFormParameters:(NSDictionary *)formParameters;
+
 @end

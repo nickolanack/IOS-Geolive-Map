@@ -21,6 +21,7 @@
 @property UIImagePickerController *picker;
 @property CLLocationManager *locMan;
 
+@property NSDictionary *formParameters;
 
 @end
 
@@ -28,9 +29,19 @@
 
 @synthesize delegate, media, attributes, details;
 
+
+-(void)setFormParameters:(NSDictionary *)formParameters{
+
+    if(_formParameters){
+        @throw [[NSException alloc] initWithName:@"Initialize Form Parameters Exception" reason:@"It is too late initialize form parameters now" userInfo:nil];
+    }
+    _formParameters=[self checkFormParameters:formParameters];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     self.navigationItem.hidesBackButton=true;
     self.tableView.editing=true;
+    
     
     
     if([[UIApplication sharedApplication].delegate conformsToProtocol:@protocol(MapFormDelegate)]){
@@ -38,6 +49,18 @@
     }
     
     
+    if((!_formParameters)&&_formDelegate&&[_formDelegate respondsToSelector:@selector(menuFormParamtersForForm)]){
+        NSDictionary *params=[_formDelegate menuFormParamtersForForm];
+        _formParameters=[self checkFormParameters:params];
+        
+    }
+    
+    if(!_formParameters){
+        //default form paramters
+        _formParameters=@{
+                          @"startWithImagePicker":[NSNumber numberWithBool:true]
+        };
+    }
     
     
     if(!self.picker){
@@ -79,8 +102,23 @@
     self.attributes=[[NSMutableDictionary alloc] initWithDictionary:@{@"keywords":@[]}];
     self.details=[[NSMutableDictionary alloc] initWithDictionary:@{@"name":@""}];
     
-    [self takePhoto];
+    if([self startWithImagePicker]){
+       [self takePhoto];
+    }
     
+}
+
+-(bool)startWithImagePicker{
+
+    if(_formParameters&&[_formParameters objectForKey:@"startWithImagePicker"]){
+        return [[_formParameters objectForKey:@"startWithImagePicker"] boolValue];
+    }
+    return true;
+    
+}
+
+-(NSDictionary *)checkFormParameters:(NSDictionary *)params{
+    return params;
 }
 
 #pragma Mark Buttons
@@ -174,12 +212,12 @@
     if([[self.navigationController topViewController] isKindOfClass:[FeatureViewController class]]){
         [self.navigationController popViewControllerAnimated:true];
     }
-
+    
 }
 
 
 -(void)viewWillDisappear:(BOOL)animated{
-
+    
     [self.tableView setDelegate:nil];
     
 }
@@ -189,7 +227,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-
+    
     int num=3; //label, title, description
     
     for (NSString *attribute in [self attributeNames]) {
@@ -197,7 +235,7 @@
     }
     
     return num;
-
+    
 }
 
 -(int)numberOfCellsForAttribute:(NSString *)attribute{
@@ -220,7 +258,7 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     UITableViewCell *cell=nil;
     NSInteger row=[indexPath row];
     
@@ -300,7 +338,7 @@
     }
     
     
-
+    
     if([cell conformsToProtocol:@protocol(GFDelegateCell)]){
         [((id<GFDelegateCell>)cell) setDelegate:self];
         [((id<GFDelegateCell>)cell) setTableView:tableView];
@@ -346,7 +384,7 @@
 
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     
     if(editingStyle==UITableViewCellEditingStyleDelete){
         NSInteger index=indexPath.row-3;
@@ -382,7 +420,7 @@
     }
     
     //[self dismissViewControllerAnimated:YES completion:^{
-        //
+    //
     //}];
     
 }
