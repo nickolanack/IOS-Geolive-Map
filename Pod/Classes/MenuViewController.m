@@ -127,7 +127,12 @@
 -(void)displayForm{
 
     
-    
+    if(self.delegate&&[self.delegate respondsToSelector:@selector(menuForm:NamedButtonWasTapped:)]){
+        if(![self.delegate menuForm:self NamedButtonWasTapped:@"newformbutton.title"]){
+            //if delegate returns false the default behavior will be ignored.
+            return;
+        }
+    }
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UserForm" bundle:nil];
     UIViewController *myController = [storyboard instantiateInitialViewController];

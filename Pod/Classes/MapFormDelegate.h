@@ -42,4 +42,6 @@
 
 -(void)menuForm:(MenuViewController *) view TopBarButtonWasTappedAtIndex:(int)index;
 
+-(bool)menuForm:(MenuViewController *) view NamedButtonWasTapped:(NSString *)string;
+
 @end
