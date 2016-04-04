@@ -38,6 +38,11 @@
     _formParameters=[self checkFormParameters:formParameters];
 }
 
+-(void)setFormData:(NSDictionary *)formData{
+    
+    
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     self.navigationItem.hidesBackButton=true;
     self.tableView.editing=true;

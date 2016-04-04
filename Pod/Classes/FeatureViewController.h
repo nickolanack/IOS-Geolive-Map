@@ -28,5 +28,6 @@
 
 
 -(void)setFormParameters:(NSDictionary *)formParameters;
+-(void)setFormData:(NSDictionary *)formData;
 
 @end
