@@ -44,8 +44,20 @@
     if([formData objectForKey:@"location"]){
         _location=[formData objectForKey:@"location"];
     }
+
+}
+
+-(NSDictionary *)getFormData{
+
+    NSDictionary *formData=@{
+                             @"name":[self.details objectForKey:@"name"]?[self.details objectForKey:@"name"]:@"",
+                             @"description":[self.details objectForKey:@"description"]?[self.details objectForKey:@"description"]:@"",
+                             @"attributes":self.attributes?self.attributes:@{},
+                             @"location":_location
+                             };
+    return formData;
     
-    
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -140,24 +152,13 @@
 - (IBAction)onSaveFormButtonTap:(id)sender {
     
     
-    NSMutableDictionary *data=self.media;
-    
-    NSLog(@"%s: %@",__PRETTY_FUNCTION__,data);
-    
-    NSDictionary *formData=@{
-                             @"name":[self.details objectForKey:@"name"],
-                             @"description":[self.details objectForKey:@"description"],
-                             @"attributes":self.attributes,
-                             @"location":_location
-                             };
-    
+
     [self displayUploadStatus];
     
     FeatureViewController * __block me=self;
     
     void (^progressHandler)(float) = ^(float percentFinished) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             [me.progressView setProgress:percentFinished];
         });
         
@@ -175,7 +176,10 @@
     };
     
     
-    if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.image"]){
+    NSMutableDictionary *data=self.media;
+    NSLog(@"%s: %@",__PRETTY_FUNCTION__,data);
+    
+    if(data&&[[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.image"]){
         
         /*
          * Upload Image Files
@@ -184,12 +188,12 @@
         if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
             [data setValue:[NSNumber numberWithBool:true] forKey:@"uploading"];
             
-            [_formDelegate saveForm:formData withImage:[data objectForKey:UIImagePickerControllerOriginalImage] withProgressHandler:progressHandler andCompletion:completion];
+            [_formDelegate saveForm:[self getFormData] withImage:[data objectForKey:UIImagePickerControllerOriginalImage] withProgressHandler:progressHandler andCompletion:completion];
             
         }else if ([data valueForKey:@"uploading"]!=nil){
             
         }
-    }else if([[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.movie"]){
+    }else if(data&&[[data objectForKey:UIImagePickerControllerMediaType] isEqualToString:@"public.movie"]){
         
         
         /*
@@ -199,13 +203,15 @@
         
         if([data valueForKey:@"success"]==nil&&[data valueForKey:@"uploading"]==nil){
             
-            [_formDelegate  saveForm:formData withVideo:[data objectForKey:UIImagePickerControllerMediaURL] withProgressHandler:progressHandler andCompletion:completion];
+            [_formDelegate  saveForm:[self getFormData] withVideo:[data objectForKey:UIImagePickerControllerMediaURL] withProgressHandler:progressHandler andCompletion:completion];
         }
         
     }else{
     
-        //NO Media.!
-        [_formDelegate  saveForm:formData withCompletion:completion];
+        /*
+         *Upload no media
+         */
+        [_formDelegate  saveForm:[self getFormData] withCompletion:completion];
         
     
     }
