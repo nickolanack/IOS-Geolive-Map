@@ -1,3 +1,5 @@
+Deprecated - About to discard
+
 # IOS-Geolive-Map
 
 [![CI Status](http://img.shields.io/travis/nickolanack/IOS-Geolive-Map.svg?style=flat)](https://travis-ci.org/nickolanack/IOS-Geolive-Map)
